@@ -1,0 +1,118 @@
+<html>
+  <head>
+    <style type="text/css">
+      div {
+        padding-top: 1%;
+      }
+    </style>
+  </head>
+  <body>
+    <form method="get" id="order-form"></form>
+    <script>
+      function createItemList() {
+        var array = Array();
+        array.push({ item: "hotdogs", value: 0 });
+        array.push({ item: "french-fries", value: 0 });
+        array.push({ item: "drinks", value: 0 });
+        return array;
+      }
+
+      function setValue(array, item, value) {
+        array[item] = value;
+      }
+
+      function getValue(array, item) {
+        return array[item];
+      }
+      const NUM_ITEMS = 3;
+      var prices = createItemList();
+      var quants = createItemList();
+
+      var form = document.getElementById("order-form");
+
+      for (let i = 0; i < quants.length; i++) {
+        var input = document.createElement("input");
+        input.setAttribute("id", quants[i].item);
+        input.setAttribute("type", "text");
+        input.setAttribute("placeholder", "Quantity of " + quants[i].item);
+        form.appendChild(input);
+      }
+
+      var submit = document.createElement("input");
+      submit.setAttribute("id", "submit");
+      submit.setAttribute("type", "submit");
+      submit.setAttribute("value", "Order");
+      form.appendChild(submit);
+
+      function updatePrices() {
+        setValue(prices, "hotdogs", 3.25);
+        setValue(prices, "french-fries", 2.0);
+        setValue(prices, "drinks", 1.5);
+      }
+
+      function updateQuantities() {
+        for (let i = 0; i < NUM_ITEMS; i++) {
+          var item = quants[i].item;
+          var amount = document.getElementById(item).value;
+          setValue(quants, item, amount);
+        }
+      }
+
+      function getSubtotal() {
+        let totalPrice = 0;
+        for (let i = 0; i < NUM_ITEMS; i++) {
+          const item = prices[i].item;
+          const unitPrice = prices[item];
+          const quant = quants[item];
+          const price = quant * unitPrice;
+          totalPrice += price;
+        }
+        return totalPrice;
+      }
+
+      function getTax(amount) {
+        let addOn = amount * 0.0625;
+        return addOn.toFixed(2);
+      }
+
+      function getDiscount(amount) {
+        let tenPercent = amount * 0.1;
+        return tenPercent.toFixed(2);
+      }
+
+      function calculateOrder() {
+        updatePrices();
+        updateQuantities();
+
+        const subtotal = getSubtotal();
+
+        let discount = 0;
+        if (subtotal > 20) discount = getDiscount(subtotal);
+        const discountedTotal = subtotal - discount;
+
+        const tax = getTax(discountedTotal);
+        const total = parseFloat(discountedTotal) + parseFloat(tax);
+
+        alert(
+          "Hotdogs: " +
+            getValue(quants, "hotdogs") +
+            "\nFrench Fries: " +
+            getValue(quants, "french-fries") +
+            "\nDrinks: " +
+            getValue(quants, "drinks") +
+            "\n\nSubtotal: $" +
+            subtotal +
+            "\nDiscount: -$" +
+            discount +
+            "\nTax: $" +
+            tax +
+            "\nTotal: $" +
+            total
+        );
+        event.preventDefault();
+      }
+
+      form.addEventListener("submit", calculateOrder);
+    </script>
+  </body>
+</html>
