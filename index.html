@@ -1,10 +1,26 @@
 <html>
   <head>
     <style type="text/css">
+      body {
+        background-image: url("fries.jpg");
+      }
+      span {
+        padding: 2%;
+      }
       div {
         padding-top: 1%;
       }
+      form {
+        padding-top: 20%;
+        text-align: center !important;
+      }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <form method="get" id="order-form"></form>
@@ -32,10 +48,12 @@
 
       for (let i = 0; i < quants.length; i++) {
         var input = document.createElement("input");
+        var span = document.createElement("span");
         input.setAttribute("id", quants[i].item);
         input.setAttribute("type", "text");
         input.setAttribute("placeholder", "Quantity of " + quants[i].item);
         form.appendChild(input);
+        form.appendChild(span);
       }
 
       var submit = document.createElement("input");
